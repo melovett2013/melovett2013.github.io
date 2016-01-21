@@ -1,1 +1,3 @@
 # Tokyo-Visualization
+
+This is an interactive visualization, designed to show how Tokyo’s 23 wards differ in population, population density, percentage of commuters, traffic accidents, and income over a period of thirty years. It functions by drawing the wards on a map of Tokyo and coloring each one via a scale representative of its value for a selected category.  Similarly, clicking on a ward reveals its name and important districts within it. By representing the data in this matter, the visualization not only shows how each ward compares to another, but also how the core of Tokyo is spatially divided with respect to this data. 
