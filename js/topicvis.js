@@ -1,3 +1,4 @@
+// The topics visualization
 TopicVis = function(_parentElement, _data, _metaData) {
    	this.parentElement = _parentElement;
     this.metaData = _metaData;
