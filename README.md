@@ -1,7 +1,7 @@
 
 # Visualizations Using Meetup's API
 
-Looking through Meetup's API and the website's UI, I noticed that members' information was not easily seen by organizers. I decided to utalize the API to aggregate data regarding member's topical interests and location. This visualization centers around the "Boston Art" group, but one could feasibly change the group by altering the requests url.
+Looking through Meetup's API and the website's UI, I noticed that members' information was not easily seen by organizers. I decided to utalize the API to aggregate data regarding members' topical interests and location. This visualization centers around the "Boston Art" group, but one could feasibly change the group by altering the requests urls.
 
 ## 1) Topics Chart 
 
