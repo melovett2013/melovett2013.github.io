@@ -2,134 +2,14 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Meetup Project</title>
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet'>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
-    <script src="libs/d3/d3.min.js" charset="utf-8"></script>
+    <title>SPU Pitch Learning</title>
     <script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
     <script src="libs/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
-    <script src="http://d3js.org/queue.v1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/myStyle.css">
-
-    <script src = "js/topicvis.js"></script>
-    <script src = "js/mapvis.js"></script>
-
 </head>
-<body> 
-    <div class="container content">
-        <div class="row">
-            <h1>Meetup Project</h1>
-        <div>
-        <div class="row">
-             <div id="intro"></div>
-        <div>
-        <br></br>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="topics"></div>
-                <br></br>
-                <p>Most shared <font color="#3987cb">topics</font> amoung members</p>
-                <br></br>
-            </div>
-            <div class="col-md-6">
-                <div id="map"></div>
-                <br></br>
-                <p>Members' <font color="#f03">residences</font> vs location of 
-                    <font color="#3987cb">events</font></p>
-                <br></br>
-            </div>
-        </div>
-    </div>
+<body>
     <script>
-        $(function(){ // Wait for the HTML document to load fully
-
-            // Variables
-            var topics = {};
-            var residences = {};
-            var topic_data = [];
-            var residence_data = [];
-            var event_data = [];
-            var total_queried; 
-            var latitude;
-            var longitude;
-            var map_vis;
-            var topic_vis;
-
-            $(document).ready(function(){ 
-                $.ajax({
-                    dataType:'jsonp',
-                    method:'get',
-                    url:"https://api.meetup.com/2/members?offset=0&format=json&group_urlname=BostonArt&photo-host=public&page=200&order=name&sig_id=199271269&sig=fc921114288daf8d1f50d6efe8657f2852eeafe9",
-                    success:function(data) {
-                        total_queried = data["results"].length;
-
-                        // Aggregate info about members in associative arrays
-                        data["results"].forEach(function(person) {
-                            if(residences.hasOwnProperty(person["city"])) residences[person["city"]]["count"] ++;
-                            else residences[person["city"]] = {
-                                count:1, 
-                                latitude:person["lat"],
-                                longitude:person["lon"],
-                                state:person["state"]};
-                            person["topics"].forEach(function(topic) {
-                                if(topics.hasOwnProperty(topic["name"])) topics[topic["name"]] ++;
-                                else topics[topic["name"]] = 1;
-                            });
-                        });
-
-                        // Update intro line
-                        document.getElementById("intro").innerHTML = "<p>Viewing the demographics of " +
-                            total_queried + " members from the <a href=http://www.meetup.com/BostonArt target=_blank>Boston Art group</a></p>"
-
-                        // Convert associative arrays into arrays to use as data for visulizations
-                        for(topic in topics) topic_data.push({value:topic, count:topics[topic]})
-                        topic_data = topic_data.sort( function(a,b) {
-                            return b["count"] - a["count"];
-                        }).splice(0,15);
-                        for(city in residences) residence_data.push({
-                            city:city + ", " + residences[city]["state"], 
-                            longitude:residences[city]["longitude"],
-                            latitude:residences[city]["latitude"],
-                            count:residences[city]["count"]
-                        });
-
-                        // Get group's event info
-                        $.ajax({
-                            dataType:'jsonp',
-                            method:'get',
-                            url:"https://api.meetup.com/2/events?offset=0&format=json&limited_events=False&group_urlname=BostonArt&photo-host=public&page=20&fields=&order=time&desc=false&status=upcoming&sig_id=199271269&sig=5b60d9113003de378542743f4dbaaebc81a724ef",
-                            success:function(events) {
-
-                                // Get the latitude and longitude of the group's location to center map
-                                latitude = events["results"][0]["group"]["group_lat"];
-                                longitude = events["results"][0]["group"]["group_lon"];
-                                events["results"].forEach (function (d) {
-                                    event_data.push({
-                                        name:d["name"],
-                                        address:d["venue"]["address_1"],
-                                        latitude:d["venue"]["lat"],
-                                        longitude:d["venue"]["lon"],
-                                        count:d["yes_rsvp_count"],
-                                        time:new Date(d["time"]),
-                                        url:d["event_url"]
-                                    });
-                                });
-                                initVis();
-                            }
-                        });
-                    }
-                });
-            });
-
-            var initVis = function(){
-                map_vis = new MapVis(d3.select("#map"), residence_data, event_data, latitude, longitude, total_queried);
-                topic_vis = new TopicVis(d3.select("#topics"), topic_data, 
-                    topic_data.map( function(d) {return d["value"];}));
-            }
-        })
     </script>
 </body>
 </html>
