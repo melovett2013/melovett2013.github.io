@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SPU Pitch Learning</title>
+    <script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+    <script src="libs/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/myStyle.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <p><b><font size="6">Week 1: Test 1</font></b></p>
+
+            <input type="radio" name="pitch" value="1"> Pitch 1 
+            <div class="play" id="btn1">play</div>
+            <br>
+            <input type="radio" name="pitch" value="2"> Pitch 2
+            <div class="play" id="btn2">play</div>
+            <br>
+            <input type="submit" value="Submit" onclick="storeAndSaveData()">
+
+            <!-- SOUNDS -->
+            <audio id="sound1">
+                <source src="music/puppy.mp3" type="audio/ogg" />
+            </audio>
+
+            <audio id="sound2">
+                <source src="music/canon.mp3" type="audio/ogg" />
+            </audio>
+        </div>
+    </div>
+    <script>
+    window.onload=function() {
+        $('.play').click(function(){
+            var $this = $(this);
+            var id = $this.attr('id').replace(/btn/, '');
+            $this.toggleClass('active');
+            if($this.hasClass('active')){
+                $this.text('pause'); 
+                $('audio[id^="sound"]')[id-1].play();        
+            } else {
+                $this.text('play');
+                $('audio[id^="sound"]')[id-1].pause();
+            }
+        }); 
+    }
+
+    function storeAndSaveData() {
+        var result1 = $("input[type='radio']").val();
+        
+        // Test if its there
+        var firstName;
+        var lastName;
+        if (localStorage.firstName) {
+            firstName = JSON.parse(localStorage.getItem("firstName"));
+        }
+
+        if (localStorage.lastName) {
+            lastName = JSON.parse(localStorage.getItem("lastName"));
+        }
+        console.log(firstName);
+        console.log(lastName);
+        console.log(result1)
+
+        // Save results to spreadsheet
+        $.ajax({
+                url: "https://docs.google.com/forms/d/11Nse_HaWQmNj5CCdmNDQqcTRHp4WdmrYi1XEWZe6Ars/formResponse",
+                data: {"entry.110896615" : firstName, "entry.1708822430" : lastName, "entry.1719677034": result1},
+                type: "POST",
+                dataType: "xml",
+                complete: function(data) {
+                    // Open the next page
+                    document.location.href = "finished.html";
+                }
+            });
+    }
+
+    </script>
+</body>
+</html>

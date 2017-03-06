@@ -9,7 +9,28 @@
     <link rel="stylesheet" type="text/css" href="css/myStyle.css">
 </head>
 <body>
+    <div class="container">
+        <div>
+            <p><b><font size="6">Week 1: Daily Pitch Learning</font></b></p>
+            <input type="text" name="firstName" value="First Name" id="firstName">
+            <input type="text" name="lastName" value="Last Name" id="lastName">
+            <input type="submit" value="Submit" onclick="storeAndLoadNextPage()">
+        </div>
+    </div>
     <script>
+
+    function storeAndLoadNextPage() {
+        var firstName = $("#firstName").val();
+        var lastName = $("#lastName").val();
+        
+        // Reset local storage and store the new data
+        localStorage.clear();
+        localStorage.setItem("firstName", JSON.stringify(firstName));
+        localStorage.setItem("lastName", JSON.stringify(lastName));
+
+        // Open the next page
+        document.location.href = "listen.html";
+    }
     </script>
 </body>
 </html>
