@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SPU Pitch Learning</title>
+    <script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+    <script src="libs/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/myStyle.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <p><b><font size="6">Wait for <text id="seconds">20</text> seconds</font></b></p>
+        </div>
+    </div>
+</body>
+    <script> 
+        window.onload=function() {
+            setTimeout(function() { document.location.href = "choose.html"; }, 20000);
+            var sec = 20;
+            
+            setInterval( function(){
+                console.log(sec);
+                sec -= 1;
+                $("#seconds").html(sec);
+            }, 1000);    
+        }
+    </script>
+</html>
